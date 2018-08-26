@@ -1,6 +1,6 @@
 # Migration
 
-Script to help SVN to Git migration
+Script to help migrate code from SVN to GIT without losing commits history, tags and branchs.
 
 ## Requirements
 
