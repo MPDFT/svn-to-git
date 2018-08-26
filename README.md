@@ -11,6 +11,7 @@ apt-get install git git-svn subversion
 ## Configuration
 Change the variables:
 * PROJECT_NAME : Name of your project 
+* EMAIL : Emails organization
 * BASE_SVN : The url to SVN repository to be migrated
 * BRANCHES : The branches folder inside BASE_SVN
 * TAGS : The tags folder inside BASE_SVN
