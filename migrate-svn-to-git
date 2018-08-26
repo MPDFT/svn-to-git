@@ -1,18 +1,19 @@
 #!/bin/bash
 
+####### Project name 
 PROJECT_NAME="myproject"
 
+###########################
 ####### SVN 
 # SVN repository to be migrated
 BASE_SVN="http://svn.mycompany.com/svn/repo/sistemas/myproject"
 
-# Branches organization inside BASE_SVN
+# Organization inside BASE_SVN
 BRANCHES="branches"
 TAGS="tags"
 TRUNK="trunk"
 
 ###########################
-
 ####### GIT 
 # Git repository to migrate
 GIT_URL="https://git.mycompany.com/git/repo/sistemas/myproject.git"
