@@ -21,7 +21,7 @@ Change the variables:
 ## Execution
 
 ```
-./migrate-svn-to-git
+./migrate
 ```
 
 Enjoy it.
