@@ -76,6 +76,9 @@ echo -e "${NC}"
 
 git svn clone --authors-file=$AUTHORS --trunk=$TRUNK --branches=$BRANCHES --tags=$TAGS $BASE_SVN $TMP
 
+git config --local user.name "$AUTHOR_NAME"
+git config --local user.email "$AUTHOR_EMAIL"
+
 echo
 echo -e "${LIGHT_GREEN} [LOG] Step 04/08  Getting first revision ${NC}"
 FIRST_REVISION=$( svn log -r 1:HEAD --limit 1 $BASE_SVN | awk -F '|' '/^r/ {sub("^ ", "", $1); sub(" $", "", $1); print $1}' )
@@ -115,7 +118,7 @@ done
 echo
 echo -e "${LIGHT_GREEN} [RUN] Step 08/08 [RUN] git push ${NC}"
 
-if [ "$PUSH_REPOSITORY" = "true"]
+if [ "$PUSH_REPOSITORY" = "true" ]
 then
   git push origin --all --force
   git push origin --tags
