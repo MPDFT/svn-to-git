@@ -13,6 +13,9 @@ services:
       PROJECT_NAME: "${PROJECT_NAME:?err}"
       EMAIL_DOMAIN: "${EMAIL_DOMAIN?err}"
 
+      AUTHOR_EMAIL: "${AUTHOR_EMAIL}"
+      AUTHOR_NAME: "${AUTHOR_NAME}"
+
       ####### SVN 
       # SVN repository to be migrated
       BASE_SVN: "${BASE_SVN?err}"
