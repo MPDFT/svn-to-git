@@ -56,7 +56,7 @@ echo
 echo -e "${LIGHT_GREEN} [LOG] Step 01/08 Create Directories ${NC}" $TMP
 
 
-mkdir $TMP
+mkdir -p $TMP
 cd $TMP
 
 echo
