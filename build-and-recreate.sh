@@ -19,5 +19,5 @@ then
     docker compose up --force-recreate --build
 else
     echo "Other OS detected... "
-    sudo docker-compose up --force-recreate --build
+    sudo docker-compose up --build -d
 fi
