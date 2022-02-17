@@ -31,11 +31,11 @@ cd $WORKSPACE_DIR
 if [ "${OSTYPE//[0-9.]/}" == "darwin" ]
 then
     echo "MacOS detected... "
-    docker compose up --build --build -d
+    docker compose up --build -d
     docker ps
 else
     echo "Other OS detected... "
     sudo docker-compose up --build -d
     sudo docker ps
 fi
-echo "Migração do $PROJECT_NAME iniciada"
+echo "O projeto $PROJECT_NAME será migrado para o repositório em $GIT_REPO_DIR (aguarde a finalização)"
