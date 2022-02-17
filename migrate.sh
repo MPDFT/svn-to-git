@@ -1,23 +1,5 @@
 #!/bin/bash
 
-####### Project name 
-PROJECT_NAME="myproject"
-EMAIL="mycompany.com"
-
-###########################
-####### SVN 
-# SVN repository to be migrated
-BASE_SVN="http://svn.mycompany.com/svn/repo/sistemas/myproject"
-
-# Organization inside BASE_SVN
-BRANCHES="branches"
-TAGS="tags"
-TRUNK="trunk"
-
-###########################
-####### GIT 
-# Git repository to migrate
-GIT_URL="https://git.mycompany.com/git/repo/sistemas/myproject.git"
 
 ###########################
 #### Don't need to change from here
@@ -27,6 +9,32 @@ GIT_URL="https://git.mycompany.com/git/repo/sistemas/myproject.git"
 RED='\033[0;31m';
 LIGHT_GREEN='\e[1;32m';
 NC='\033[0m' # No Color
+
+
+# PARAM VALIDATION
+if [ -z "$PROJECT_NAME" ]
+then
+  echo -e "${RED} [ERROR] env variable PROJECT_NAME missing, it can't continue..."
+  exit 2
+fi
+
+if [ -z "$EMAIL_DOMAIN" ]
+then
+  echo -e "${RED} [ERROR] env variable EMAIL_DOMAIN missing, it can't continue..."
+  exit 2
+fi
+
+if [ -z "$BASE_SVN" ]
+then
+  echo -e "${RED} [ERROR] env variable BASE_SVN missing, it can't continue..."
+  exit 2
+fi
+
+if [ -z "$BRANCHES" ] || [ -z "$TAGS" ] || [ -z "$TRUNK" ]
+then
+  echo -e "${RED} [ERROR] env variable BRANCHES, TAGS, TRUNK missing, it cant continue..."
+  exit 2
+fi
 
 
 # Geral Configuration
@@ -48,12 +56,18 @@ echo
 echo -e "${LIGHT_GREEN} [LOG] Step 01/08 Create Directories ${NC}" $TMP
 
 
-mkdir $TMP
+mkdir -p $TMP
 cd $TMP
 
 echo
 echo -e "${LIGHT_GREEN} [LOG] Step 02/08 Getting authors ${NC}"
-svn log -q $BASE_SVN | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2"@"$EMAIL">"}' | sort -u >> $AUTHORS
+AUTHORS_LOG=$(svn log -q $BASE_SVN)
+if [ $? -ne 0 ]
+then
+  echo -e "${RED} [ERROR] Could not access $BASE_SVN"
+  exit 2
+fi
+echo "$AUTHORS_LOG" | awk '{print $3}' | awk 'NF' | awk '{print $1 " = " $1 " <"$1"@"ENVIRON["EMAIL_DOMAIN"]">"}'| sort -u >> $AUTHORS
 
 echo
 echo -e "${LIGHT_GREEN} [RUN] Step 03/08"
@@ -61,6 +75,9 @@ echo 'git svn clone --authors-file='$AUTHORS' --trunk='$TRUNK' --branches='$BRAN
 echo -e "${NC}"
 
 git svn clone --authors-file=$AUTHORS --trunk=$TRUNK --branches=$BRANCHES --tags=$TAGS $BASE_SVN $TMP
+
+git config --local user.name "$AUTHOR_NAME"
+git config --local user.email "$AUTHOR_EMAIL"
 
 echo
 echo -e "${LIGHT_GREEN} [LOG] Step 04/08  Getting first revision ${NC}"
@@ -100,7 +117,11 @@ done
 
 echo
 echo -e "${LIGHT_GREEN} [RUN] Step 08/08 [RUN] git push ${NC}"
-git push origin --all --force
-git push origin --tags
 
-echo 'Sucessufull.'
+if [ "$PUSH_REPOSITORY" = "true" ]
+then
+  git push origin --all --force
+  git push origin --tags
+fi
+
+echo 'Successful.'
