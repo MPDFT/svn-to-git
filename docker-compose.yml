@@ -7,7 +7,7 @@ services:
     container_name: svn2git-${PROJECT_NAME}
     entrypoint: "/root/migrate.sh"
     volumes:
-      - ./workspace-${PROJECT_NAME}:/root/migration-${PROJECT_NAME}
+      - ./git-repo:/root/migration-${PROJECT_NAME}
     environment:
       ####### Project name 
       PROJECT_NAME: "${PROJECT_NAME:?err}"
