@@ -4,10 +4,10 @@ services:
     image: mpdft/svn-to-git
     build:
       context: .
-    container_name: svn-to-git
+    container_name: svn2git-${PROJECT_NAME}
     entrypoint: "/root/migrate.sh"
     volumes:
-      - ./workspace:/root/migration-${PROJECT_NAME}
+      - ./workspace-${PROJECT_NAME}:/root/migration-${PROJECT_NAME}
     environment:
       ####### Project name 
       PROJECT_NAME: "${PROJECT_NAME:?err}"
