@@ -5,7 +5,7 @@ cd $(dirname "$0")
 PROJECT_NAME_KEY='PROJECT_NAME'
 PROJECT_NAME=$(cat .env | grep -e "$PROJECT_NAME_KEY" | sed "s/$PROJECT_NAME_KEY=//")
 
-WORKSPACE_DIR="./workspace-$PROJECT_NAME/"
+WORKSPACE_DIR="./workspace-$PROJECT_NAME"
 GIT_REPO_DIR="$WORKSPACE_DIR/git-repo/"
 if [ -d "$WORKSPACE_DIR" ]
 then
