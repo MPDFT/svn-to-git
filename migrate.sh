@@ -67,7 +67,7 @@ then
   echo -e "${RED} [ERROR] Could not access $BASE_SVN"
   exit 2
 fi
-echo "$AUTHORS_LOG" | awk '{print $3}' | awk 'NF' | awk '{print $1 " = " $1 " <"$1"@"ENVIRON["EMAIL_DOMAIN"]">"}'| sort -u >> $AUTHORS
+echo "$AUTHORS_LOG" | awk -F '|' '{print $2}' | awk 'NF' | awk '{$1=$1};1' | awk '{print $0 " = "$0 "<"$0"@"ENVIRON["EMAIL_DOMAIN"]">"}'| sort -u >> $AUTHORS
 
 echo
 echo -e "${LIGHT_GREEN} [RUN] Step 03/08"
