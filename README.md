@@ -1,27 +1,28 @@
-# Migration
+# Migração para o Git
 
-Script to help migrate code from SVN to GIT without losing commits history, tags and branchs.
+Script para migração de repositórios SVN para o git
 
-## Requirements
-
-```
-apt-get install git git-svn subversion
-```
-
-## Configuration
-Change the variables:
-* PROJECT_NAME : Name of your project 
-* EMAIL : Emails organization
-* BASE_SVN : The url to SVN repository to be migrated
-* BRANCHES : The branches folder inside BASE_SVN
-* TAGS : The tags folder inside BASE_SVN
-* TRUNK : The trunk folder inside BASE_SVN
-* GIT_URL : The url to Git repository to migrate
-
-## Execution
+## Requisitos
 
 ```
-./migrate
+docker
 ```
 
-Enjoy it.
+## Configuração
+Abrir o arquivo .env e preencher as variáveis de ambiente. 
+AUTHOR_EMAIL e AUTHOR_NAME devem preenchidos com os dados do usuário atual - que está fazendo a migração - sem isso a ferramenta não consegue baixar as tags do projeto.
+Recomendo que mantenha a variável PUSH_REPOSITORY como false - não faça o push após a migração - assim o repositório é gerado localmente dentro da pasta ./workspace e você pode conferir se deu certo antes de fazer o push.
+Após finalizar, verifique o histórico do repositório git e as tags convertidas com os comandos
+
+```
+git log
+git tag --list
+```
+
+## Execução
+
+```
+./start-migration.sh
+```
+
+É possível migrar vários projetos ao mesmo tempo, basta alterar o arquivo .env e executar o script que um container diferente será criado no docker para realizar a migração

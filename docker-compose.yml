@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  svn-to-git:
+    image: mpdft/svn-to-git
+    build:
+      context: .
+    container_name: svn2git-${PROJECT_NAME}
+    entrypoint: "/root/migrate.sh"
+    volumes:
+      - ./git-repo:/root/migration-${PROJECT_NAME}
+    environment:
+      ####### Project name 
+      PROJECT_NAME: "${PROJECT_NAME:?err}"
+      EMAIL_DOMAIN: "${EMAIL_DOMAIN?err}"
+
+      AUTHOR_EMAIL: "${AUTHOR_EMAIL}"
+      AUTHOR_NAME: "${AUTHOR_NAME}"
+
+      ####### SVN 
+      # SVN repository to be migrated
+      BASE_SVN: "${BASE_SVN?err}"
+
+      # Organization inside BASE_SVN
+      BRANCHES: "${BRANCHES:-branches}"
+      TAGS: "${TAGS:-tags}"
+      TRUNK: "${TRUNK:-trunk}"
+
+      ###########################
+      ####### GIT 
+      # Git repository to migrate
+      GIT_URL: "${GIT_URL}"
+      PUSH_REPOSITORY: "${PUSH_REPOSITORY:-false}"
+
