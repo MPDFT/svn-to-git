@@ -20,6 +20,7 @@ services:
       # SVN repository to be migrated
       BASE_SVN: "${BASE_SVN?err}"
 
+      IGNORE_BRANCH_TAG: "${IGNORE_BRANCH_TAG:-false}"
       # Organization inside BASE_SVN
       BRANCHES: "${BRANCHES:-branches}"
       TAGS: "${TAGS:-tags}"

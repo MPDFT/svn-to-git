@@ -74,7 +74,12 @@ echo -e "${LIGHT_GREEN} [RUN] Step 03/08"
 echo 'git svn clone --authors-file='$AUTHORS' --trunk='$TRUNK' --branches='$BRANCHES' --tags='$TAGS $BASE_SVN $TMP
 echo -e "${NC}"
 
-git svn clone --authors-file=$AUTHORS --trunk=$TRUNK --branches=$BRANCHES --tags=$TAGS $BASE_SVN $TMP
+if ["$IGNORE_BRANCH_TAG" = "false"]
+then
+  git svn clone --authors-file=$AUTHORS --trunk=$TRUNK --branches=$BRANCHES --tags=$TAGS $BASE_SVN $TMP
+else
+  git svn clone --authors-file=$AUTHORS --trunk=$TRUNK $BASE_SVN $TMP
+fi
 
 git config --local user.name "$AUTHOR_NAME"
 git config --local user.email "$AUTHOR_EMAIL"
@@ -93,27 +98,31 @@ echo -e "${LIGHT_GREEN} [RUN] Step 06/08 ${NC}"
 echo 'git remote add origin '$GIT_URL
 git remote add origin $GIT_URL
 
-echo
-echo -e "${LIGHT_GREEN} [RUN] Step 07/08 ${NC}"
-echo 'svn ls '$SVN_BRANCHES
 
-for BRANCH in $(svn ls $SVN_BRANCHES); do
-    echo git branch ${BRANCH%/} remotes/svn/${BRANCH%/}
-    git branch ${BRANCH%/} remotes/svn/${BRANCH%/}
-done
+if ["$IGNORE_BRANCH_TAG" = "false"]
+then
+  echo
+  echo -e "${LIGHT_GREEN} [RUN] Step 07/08 ${NC}"
+  echo 'svn ls '$SVN_BRANCHES
 
-git for-each-ref --format="%(refname:short) %(objectname)" refs/remotes/origin/tags | grep -v "@" | cut -d / -f 3- |
-while read ref
-do
-  echo git tag -a $ref -m 'import tag from svn'
-  git tag -a $ref -m 'import tag from svn'
-done
+  for BRANCH in $(svn ls $SVN_BRANCHES); do
+      echo git branch ${BRANCH%/} remotes/svn/${BRANCH%/}
+      git branch ${BRANCH%/} remotes/svn/${BRANCH%/}
+  done
 
-git for-each-ref --format="%(refname:short)" refs/remotes/origin/tags | cut -d / -f 1- |
-while read ref
-do
-  git branch -rd $ref
-done
+  git for-each-ref --format="%(refname:short) %(objectname)" refs/remotes/origin/tags | grep -v "@" | cut -d / -f 3- |
+  while read ref
+  do
+    echo git tag -a $ref -m 'import tag from svn'
+    git tag -a $ref -m 'import tag from svn'
+  done
+
+  git for-each-ref --format="%(refname:short)" refs/remotes/origin/tags | cut -d / -f 1- |
+  while read ref
+  do
+    git branch -rd $ref
+  done
+fi
 
 echo
 echo -e "${LIGHT_GREEN} [RUN] Step 08/08 [RUN] git push ${NC}"
