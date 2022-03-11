@@ -71,15 +71,16 @@ echo "$AUTHORS_LOG" | awk -F '|' '{print $2}' | awk 'NF' | awk '{$1=$1};1' | awk
 
 echo
 echo -e "${LIGHT_GREEN} [RUN] Step 03/08"
-echo 'git svn clone --authors-file='$AUTHORS' --trunk='$TRUNK' --branches='$BRANCHES' --tags='$TAGS $BASE_SVN $TMP
-echo -e "${NC}"
 
-if ["$IGNORE_BRANCH_TAG" = "false"]
+if [ "$IGNORE_BRANCHES_TAG" = "false" ]
 then
+  echo 'git svn clone --authors-file='$AUTHORS' --trunk='$TRUNK' --branches='$BRANCHES' --tags='$TAGS $BASE_SVN $TMP
   git svn clone --authors-file=$AUTHORS --trunk=$TRUNK --branches=$BRANCHES --tags=$TAGS $BASE_SVN $TMP
 else
-  git svn clone --authors-file=$AUTHORS --trunk=$TRUNK $BASE_SVN $TMP
+  echo "clone with no branches"
+  git svn clone --authors-file=$AUTHORS $BASE_SVN $TMP
 fi
+echo -e "${NC}"
 
 git config --local user.name "$AUTHOR_NAME"
 git config --local user.email "$AUTHOR_EMAIL"
@@ -99,7 +100,7 @@ echo 'git remote add origin '$GIT_URL
 git remote add origin $GIT_URL
 
 
-if ["$IGNORE_BRANCH_TAG" = "false"]
+if [ "$IGNORE_BRANCHES_TAG" = "false" ]
 then
   echo
   echo -e "${LIGHT_GREEN} [RUN] Step 07/08 ${NC}"

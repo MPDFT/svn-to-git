@@ -33,6 +33,7 @@ then
     echo "MacOS detected... "
     docker compose up --build -d
     docker ps
+    docker logs $WORKSPACE_DIR --follow
 else
     echo "Other OS detected... "
     sudo docker-compose up --build -d
