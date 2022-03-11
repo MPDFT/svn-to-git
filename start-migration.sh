@@ -31,9 +31,7 @@ cd $WORKSPACE_DIR
 if [ "${OSTYPE//[0-9.]/}" == "darwin" ]
 then
     echo "MacOS detected... "
-    docker compose up --build -d
-    docker ps
-    docker logs $WORKSPACE_DIR --follow
+    docker compose up --build
 else
     echo "Other OS detected... "
     sudo docker-compose up --build -d

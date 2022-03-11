@@ -8,6 +8,7 @@ services:
     entrypoint: "/root/migrate.sh"
     volumes:
       - ./git-repo:/root/migration-${PROJECT_NAME}
+      - /Users/sergio/mpdft-workspace/temp/svn-reps/repo:/root/svn-repo
     environment:
       ####### Project name 
       PROJECT_NAME: "${PROJECT_NAME:?err}"
