@@ -4,9 +4,9 @@ RUN apt-get update
 
 RUN apt-get install -y git git-svn subversion
 
-ADD migrate /root/migrate
+ADD migrate.sh /root/migrate.sh
 ADD openssl.cnf /etc/ssl/openssl.cnf
 
-RUN chmod +x /root/migrate
+RUN chmod +x /root/migrate.sh
 
 WORKDIR /root 
